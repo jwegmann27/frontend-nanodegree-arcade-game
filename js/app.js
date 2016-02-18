@@ -1,5 +1,5 @@
 /*Getting a Grasp on the Situation
-So first we obv have the enimies class and the player class
+So first we obv have the enemies class and the player class
 The Enemy class needs the following
     - Load Images : already done for me CHECK
     - define multiple enemy objects probably using "new" like in the car van example
@@ -14,29 +14,46 @@ The Player class will need the following:
 
     Ok now we can start*/
 //Canvas is 505 by 606
-    // Enemies our player must avoid
-var allEnemies= [ ];// end of allEnemies
+// Enemies our player must avoid
+var bugY, bugX, speed;
 
-var bugInitx = 20, bugInity = 100;
-
-var Enemy = function(bugInitx, bugInity) {
+var Enemy = function(bugX, bugY, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = bugInitx;
-    this.y = bugInity;
+    var min = 1, max = 20;
+    this.x = bugX;
+    this.y = bugY;
+    this.speed = Math.random()*(max - min) + min;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-
+    //this.move();
+    this.update();
 };
+
+/*Enemy.prototype.move = function(dt){
+// becasuse the bugs have a set y I only need to change the X cord. 
+this.x + (Math.random()*20);
+};
+I was going to have a move function but it didnt seem necessary*/
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(bugInitx, bugInity,dt) {
+Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += dt*Math.random();//idk about this yet
+    this.x += this.speed;
+    if (this.x > 505){
+        this.reset()
+    }
+};
+
+Enemy.prototype.reset = function(speed){
+    var min = 1, max = 20;
+    this.x = 0;
+    speed = Math.random() * (max - min) + min;
+    return speed;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -44,15 +61,22 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var enemy = new Enemy();
+var bug1 = new Enemy(-150,225,10);
+var bug2 = new Enemy(-150,145,20);
+var bug3 = new Enemy(-150,55,15);
+var allEnemies= [bug1, bug2, bug3];
+// i could push the enemies into the array but i dont see a point to 
+//complicate it since we only have three enemies
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
     //load image of player i hope
-    var initx = 200, inity = 430;
-    this.x = initx;
-    this.y = inity;
+    // the next four lines are all the lines need to start with a player
+    var plyX = 200, plyY = 430;
+    this.x = plyX;
+    this.y = plyY;
     this.sprite = 'images/char-horn-girl.png';
 };
 
@@ -68,7 +92,7 @@ Player.prototype.checkCollisions = function() {};
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var player = new Player();
+var player = new Player(); // this creates a player object
 
 
 // This listens for key presses and sends the keys to your
