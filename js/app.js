@@ -20,15 +20,13 @@ var bugY, bugX, speed;
 var Enemy = function(bugX, bugY, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    var min = 1, max = 20;
+    var min = 100, max = 150;
     this.x = bugX;
     this.y = bugY;
     this.speed = Math.random()*(max - min) + min;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    //this.move();
-    this.update();
 };
 
 /*Enemy.prototype.move = function(dt){
@@ -43,14 +41,14 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed;
+    this.x += this.speed *dt;
     if (this.x > 505){
         this.reset()
     }
 };
 
 Enemy.prototype.reset = function(speed){
-    var min = 1, max = 20;
+    var min = 100, max = 150;
     this.x = 0;
     speed = Math.random() * (max - min) + min;
     return speed;
@@ -85,7 +83,18 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 Player.prototype.update = function() {};
-Player.prototype.handleInput = function() {};
+
+Player.prototype.handleInput = function(dir) {
+    if (dir == 'left' && this.x > 0) {
+        this.x -= 50;
+    } else if (dir == 'up' && this.y > 0) {
+        this.y -= 50;
+    } else if (dir == 'right' && this.x < 400) {
+        this.x += 50;
+    } else if (dir == 'down' && this.y < 430) {
+        this.y += 50;
+    }
+};
 Player.prototype.checkCollisions = function() {};
 
 // Now instantiate your objects.
