@@ -1,18 +1,3 @@
-/*Getting a Grasp on the Situation
-So first we obv have the enemies class and the player class
-The Enemy class needs the following
-    - Load Images : already done for me CHECK
-    - define multiple enemy objects probably using "new" like in the car van example
-    - Set location for enemies 
-    - Move Enemies
-
-The Player class will need the following: 
-    - Load Image of Player
-    - Set starting location
-    - Take in inputs so that we can control the player
-    - reset when gets in the river or hits an enemy
-
-    Ok now we can start*/
 //Canvas is 505 by 606
 // Enemies our player must avoid
 var bugY, bugX, speed;
@@ -69,10 +54,11 @@ var allEnemies= [bug1, bug2, bug3];
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var plyX = 200, plyY = 430;
+
 var Player = function() {
     //load image of player i hope
     // the next four lines are all the lines need to start with a player
-    var plyX = 200, plyY = 430;
     this.x = plyX;
     this.y = plyY;
     this.sprite = 'images/char-horn-girl.png';
@@ -82,8 +68,16 @@ Player.prototype.render = function() {
     //In this i guess I can just emulate the render enemy 
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-Player.prototype.update = function() {};
-
+Player.prototype.update = function() {
+    if (this.y < 0) {
+        this.reset();
+    }
+};
+Player.prototype.reset = function() {
+    this.x = plyX;
+    this.y = plyY;
+    // in the future if i wanted to this could trigger a point variable or a win msg. 
+}
 Player.prototype.handleInput = function(dir) {
     if (dir == 'left' && this.x > 0) {
         this.x -= 50;
