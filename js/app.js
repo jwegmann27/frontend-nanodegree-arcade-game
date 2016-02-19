@@ -54,7 +54,7 @@ var allEnemies= [bug1, bug2, bug3];
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var plyX = 200, plyY = 430;
+var plyX = 200, plyY = 435, x;
 
 var Player = function() {
     //load image of player i hope
@@ -71,25 +71,37 @@ Player.prototype.render = function() {
 Player.prototype.update = function() {
     if (this.y < 0) {
         this.reset();
+    } else if (this.checkCollisions() == true){
+        this.reset();
     }
 };
 Player.prototype.reset = function() {
     this.x = plyX;
     this.y = plyY;
+    for(var i = 0; i < 3; i++){
+        allEnemies[i].reset();
+    }
     // in the future if i wanted to this could trigger a point variable or a win msg. 
 }
 Player.prototype.handleInput = function(dir) {
     if (dir == 'left' && this.x > 0) {
-        this.x -= 50;
+        this.x -= 25;
     } else if (dir == 'up' && this.y > 0) {
-        this.y -= 50;
+        this.y -= 25;
     } else if (dir == 'right' && this.x < 400) {
-        this.x += 50;
+        this.x += 25;
     } else if (dir == 'down' && this.y < 430) {
-        this.y += 50;
+        this.y += 25;
     }
 };
-Player.prototype.checkCollisions = function() {};
+Player.prototype.checkCollisions = function() {
+//this is for the all enemies iteration
+    for (var i = 0; i < 3; i++){
+        if ((this.x) >= (allEnemies[i].x - 50) && (this.x) <= (allEnemies[i].x + 50) && (this.y) >= (allEnemies[i].y - 33) && (this.y) <= (allEnemies[i].y + 33)){
+            return true;
+        }
+    }
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
