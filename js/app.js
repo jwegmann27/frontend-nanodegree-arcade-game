@@ -1,14 +1,16 @@
 //Canvas is 505 by 606
-// Enemies our player must avoid
+//variables for the enemy objects
 var bugY, bugX, speed;
 
 var Enemy = function(bugX, bugY, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    var min = 100, max = 150;
+    var min = 100,
+        max = 150;
     this.x = bugX;
     this.y = bugY;
-    this.speed = Math.random()*(max - min) + min;
+    this.speed = Math.random() * (max - min) + min;
+    //gives a range of random numbers for the speed
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -26,14 +28,15 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed *dt;
-    if (this.x > 505){
-        this.reset()
+    this.x += this.speed * dt;
+    if (this.x > 505) {
+        this.reset();
     }
 };
 
-Enemy.prototype.reset = function(speed){
-    var min = 100, max = 150;
+Enemy.prototype.reset = function(speed) {
+    var min = 100,
+        max = 150;
     this.x = 0;
     speed = Math.random() * (max - min) + min;
     return speed;
@@ -44,17 +47,19 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var bug1 = new Enemy(-150,225,10);
-var bug2 = new Enemy(-150,145,20);
-var bug3 = new Enemy(-150,55,15);
-var allEnemies= [bug1, bug2, bug3];
+var bug1 = new Enemy(-150, 225, 10);
+var bug2 = new Enemy(-150, 145, 20);
+var bug3 = new Enemy(-150, 55, 15);
+var allEnemies = [bug1, bug2, bug3];
 // i could push the enemies into the array but i dont see a point to 
 //complicate it since we only have three enemies
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var plyX = 200, plyY = 435, x;
+var plyX = 200,
+    plyY = 435,
+    x;
 
 var Player = function() {
     //load image of player i hope
@@ -71,18 +76,18 @@ Player.prototype.render = function() {
 Player.prototype.update = function() {
     if (this.y < 0) {
         this.reset();
-    } else if (this.checkCollisions() == true){
+    } else if (this.checkCollisions() === true) {
         this.reset();
     }
 };
 Player.prototype.reset = function() {
     this.x = plyX;
     this.y = plyY;
-    for(var i = 0; i < 3; i++){
+    for (var i = 0; i < 3; i++) {
         allEnemies[i].reset();
     }
     // in the future if i wanted to this could trigger a point variable or a win msg. 
-}
+};
 Player.prototype.handleInput = function(dir) {
     if (dir == 'left' && this.x > 0) {
         this.x -= 25;
@@ -95,9 +100,9 @@ Player.prototype.handleInput = function(dir) {
     }
 };
 Player.prototype.checkCollisions = function() {
-//this is for the all enemies iteration
-    for (var i = 0; i < 3; i++){
-        if ((this.x) >= (allEnemies[i].x - 50) && (this.x) <= (allEnemies[i].x + 50) && (this.y) >= (allEnemies[i].y - 33) && (this.y) <= (allEnemies[i].y + 33)){
+    //this is for the all enemies iteration
+    for (var i = 0; i < 3; i++) {
+        if ((this.x) >= (allEnemies[i].x - 50) && (this.x) <= (allEnemies[i].x + 50) && (this.y) >= (allEnemies[i].y - 33) && (this.y) <= (allEnemies[i].y + 33)) {
             return true;
         }
     }
@@ -122,4 +127,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
